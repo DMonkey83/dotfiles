@@ -10,10 +10,39 @@ fi
 alias n='nvim'
 alias nz='nvim ~/.zshrc'
 alias nn='nvim ~/.config/nvim/init.vim'
+alias nh='nvim ~/.config/hypr'
 alias sz='source ~/.zshrc'
 
-alias pin='sudo pacman -S'
-alias pup='sudo pacman -Syyu'
+alias lx='exa -lFagu --group-directories-first --icons'
+
+alias claude="/home/evilnis/.claude/local/claude"
+
+# git aliases
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gaa='git add --all'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gsw='git switch'
+alias gswc='git switch -c'
+alias gb='git branch'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gl='git log --oneline --decorate --graph'
+alias glo='git log --oneline --decorate --graph --all'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
+alias gpl='git pull'
+alias gf='git fetch'
+alias gfa='git fetch --all --prune'
+alias gr='git restore'
+alias grs='git restore --staged'
+alias gstash='git stash'
+alias gstp='git stash pop'
+alias gstl='git stash list'
+alias gbr='git branch --show-current'
 
 
 
@@ -93,16 +122,35 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 #Rust:
 source $HOME/.cargo/env
 
-#Ruby On Rails:
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
-
 # Golang:
 export GOPATH=$HOME/Projects/go
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# P10K To customize prompt, run `p10k configure` or edit ~/.p10k.zsh:
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 #FZF:
+source <(fzf --zsh)
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+#LVIM
+export PATH=/home/evilnis/.local/bin:$PATH
+
+#Zoxide
+eval "$(zoxide init zsh)"
+
+# pnpm
+export PNPM_HOME="/home/evilnis/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
+# bun completions
+[ -s "/home/evilnis/.bun/_bun" ] && source "/home/evilnis/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+fastfetch
