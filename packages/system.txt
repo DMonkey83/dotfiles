@@ -1,0 +1,34 @@
+# Reference only - NOT installed by the scripts.
+# Kernel, boot, filesystem, firmware and login-manager packages are chosen by
+# the OS installer for the new hardware/disk layout; reinstalling them blindly
+# can fight with that setup (e.g. dracut vs mkinitcpio). scripts/sync.sh keeps
+# these out of repo.txt.
+base
+linux
+linux-headers
+linux-firmware
+amd-ucode
+dracut
+kernel-install-for-dracut
+efibootmgr
+efitools
+btrfs-progs
+cryptsetup
+device-mapper
+dmraid
+lvm2
+mdadm
+e2fsprogs
+xfsprogs
+jfsutils
+f2fs-tools
+nilfs-utils
+sof-firmware
+alsa-firmware
+b43-fwcutter
+endeavouros-branding
+endeavouros-keyring
+endeavouros-mirrorlist
+lightdm
+lightdm-slick-greeter
+eos-lightdm-slick-theme

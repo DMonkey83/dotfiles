@@ -1,0 +1,7 @@
+[color]
+	ui = true
+[user]
+	name = Einars Vilnis
+	email = vilniseinars@gmail.com
+[init]
+	defaultBranch = main

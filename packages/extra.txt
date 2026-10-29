@@ -1,0 +1,12 @@
+# Hand-maintained additions (repo or AUR) - never overwritten by scripts/sync.sh.
+
+# used by .zshrc but only installed as a dependency on the old PC
+fzf
+# nerd fonts that were installed with getnf into ~/.local/share/fonts
+ttf-cascadia-code-nerd
+ttf-firacode-nerd
+ttf-sourcecodepro-nerd
+# JS tooling referenced in .zshrc (PNPM_HOME stays ~/.local/share/pnpm)
+pnpm
+# copy-based dotfiles scripts
+rsync

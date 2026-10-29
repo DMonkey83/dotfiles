@@ -1,0 +1,10 @@
+# System services enabled (and started) by scripts/packages.sh.
+# The display manager is left to the OS installer.
+NetworkManager.service
+firewalld.service
+power-profiles-daemon.service
+cups.service
+avahi-daemon.service
+docker.service
+ollama.service
+fstrim.timer
