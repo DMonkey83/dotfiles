@@ -37,15 +37,28 @@ check_multilib() {
   fi
 }
 
+# PCI vendor 0x1002 is AMD/ATI, class 0x03xxxx is a display controller. Reads
+# sysfs directly, so it needs no tools and also counts the Ryzen iGPU.
+has_amd_gpu() {
+  local dev
+  for dev in /sys/bus/pci/devices/*; do
+    if [[ $(<"$dev/vendor") == 0x1002 && $(<"$dev/class") == 0x03* ]]; then return 0; fi
+  done
+  return 1
+}
+
 install_packages() {
   # Full upgrade first: installing on top of a bare -Sy risks a partial upgrade.
   info "Upgrading the system"
   sudo pacman -Syu "${NOCONFIRM[@]}"
 
-  local lists=("$PKG_DIR/aur.txt" "$PKG_DIR/extra.txt")
-  if lspci 2>/dev/null | grep -iE 'vga|3d|display' | grep -qE 'AMD|ATI|Radeon'; then
-    info "AMD GPU detected, including packages/amd.txt"
+  local lists=("$PKG_DIR/aur.txt" "$PKG_DIR/extra.txt") amd_pkgs=()
+  if has_amd_gpu; then
+    mapfile -t amd_pkgs < <(read_list "$PKG_DIR/amd.txt")
+    info "AMD GPU found, adding packages/amd.txt: ${amd_pkgs[*]}"
     lists+=("$PKG_DIR/amd.txt")
+  else
+    warn "No AMD GPU found, skipping packages/amd.txt (ROCm for ollama, Radeon Vulkan drivers)"
   fi
 
   local -a in_repos missing repo_pkgs aur_pkgs
@@ -80,6 +93,16 @@ install_packages() {
         paru -S "${PARU_FLAGS[@]}" "${AUR_FLAGS[@]}" "$pkg" || failed+=("$pkg")
       done
       if ((${#failed[@]})); then warn "AUR packages that failed: ${failed[*]}"; fi
+    fi
+  fi
+
+  # A GPU-less ollama still works (on the CPU), so make a missing ROCm backend loud.
+  if ((${#amd_pkgs[@]})); then
+    local still_missing
+    mapfile -t still_missing < <(pacman -T "${amd_pkgs[@]}" || true)
+    if ((${#still_missing[@]})); then
+      warn "AMD packages NOT installed: ${still_missing[*]}"
+      warn "Install them with: paru -S ${still_missing[*]}"
     fi
   fi
 }
